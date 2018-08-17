@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pe.com.sistemaera.core.dao.PerfilDao">
+
+	<select id="listarTodos" resultType="Perfil">
+		SELECT 
+			  u.NO_PERFIL AS nombre
+			, u.DE_PERFIL AS descripcion
+		 	, if(u.st_regi='I','Inactivo','Activo')  AS estadoRegistro
+			, u.id_perfil as idPerfil 
+			, u.st_regi as stRegi
+		FROM perfil u
+	</select>
+	
+	<select id="listarTodosActivos" resultType="Perfil">
+		SELECT 
+			  u.NO_PERFIL AS nombre
+			, u.DE_PERFIL AS descripcion
+		 	, if(u.st_regi='I','Inactivo','Activo')  AS estadoRegistro
+			, u.id_perfil as idPerfil 
+			, u.st_regi as stRegi
+		FROM perfil u
+		WHERE u.st_regi = 'A'
+	</select>
+
+	<resultMap id="listaComboResultMap" type="HashMap">
+		<id property="id" column="id_perfil" />
+		<result property="descripcion" column="no_perf" />
+	</resultMap>
+	
+	<select id="listarComboPerfiles" resultMap="listaComboResultMap">
+		SELECT 
+			  p.id_perfil
+			, p.NO_PERFIL
+		FROM perfil p
+		WHERE p.st_regi='A'
+		ORDER BY p.no_perf asc
+	</select>
+	
+	<select id="listar" parameterType="Map" resultType="Perfil">
+		SELECT 
+			  u.NO_PERFIL AS nombre
+			, u.DE_PERFIL AS descripcion
+			, if(u.st_regi='I','Inactivo','Activo')  AS estadoRegistro
+			, u.id_perfil as idPerfil
+			, u.st_regi as stRegi
+		FROM perfil u
+		<where>
+			<if test="nombre != '' ">
+				u.NO_PERFIL Like #{nombre} || '%'
+			</if>
+			<if test="estadoRegistro != '' ">
+				AND u.st_regi = #{estadoRegistro}
+			</if>
+		</where>
+		ORDER BY u.NO_PERFIL ASC
+	</select>
+
+	<select id="obtenerPerfil" parameterType="Map" resultType="Perfil">
+		SELECT u.NO_PERFIL AS nombre,
+			   u.DE_PERFIL AS descripcion,
+			   u.st_regi AS	estadoRegistro,
+			   u.id_perfil as idPerfil
+		FROM perfil u
+		WHERE u.id_perfil = #{id}
+	</select>
+
+	<select id="listarOpcionesPorPerfil" parameterType="Integer"
+		resultType="Opcion">
+		SELECT 
+			p.id_opcion as idOpcion
+		FROM perfil_opcion p
+		WHERE p.id_perfil = #{id}
+	</select>
+
+	<insert id="insertar" parameterType="Perfil">
+		INSERT INTO PERFIL
+		(NO_PERFIL, DE_PERFIL, id_usua_crea, fe_usua_crea, de_term_crea, st_regi)
+		VALUES
+		(#{nombre}, #{descripcion},
+		#{idUsuaCrea},SYSDATE(), #{deTermCrea},
+		'A')
+		<selectKey resultType="java.lang.Integer" keyProperty="idPerfil" order="AFTER" >
+		  SELECT LAST_INSERT_ID() as idPerfil
+		</selectKey>
+	</insert>
+
+	<update id="actualizar" parameterType="Perfil">
+		UPDATE PERFIL
+			set 
+				  NO_PERFIL = #{nombre} 
+				, DE_PERFIL = #{descripcion}
+				<if test="estadoRegistro != null ">,st_regi= #{estadoRegistro}</if>
+				, id_usua_modi = #{idUsuaModi}
+				, fe_usua_modi = SYSDATE()
+				, de_term_modi = #{deTermModi}
+		where id_perfil = #{idPerfil}
+	</update>
+
+	<update id="eliminar" parameterType="Integer">
+		UPDATE PERFIL
+			set 
+				st_regi = if(st_regi='I','A','I')
+		where id_perfil= #{idPerfil}
+	</update>
+
+	<select id="existePerfilRegistrado" resultType="Integer" parameterType="String">
+		SELECT DISTINCT 1 FROM perfil u
+		WHERE u.NO_PERFIL=#{nombre}
+	</select>
+
+	<delete id="eliminarOpcionPerfil" parameterType="int">
+		DELETE from perfil_opcion 
+		WHERE id_perfil = #{idPerfil}
+	</delete>
+
+	<insert id="insertarOpcionPerfil" parameterType="map">
+		INSERT INTO perfil_opcion
+		(id_perfil, id_opcion, st_regi, id_usua_crea, fe_usua_crea,de_term_crea)
+		VALUES
+		(#{idPerfil}, #{idOpcion},#{estadoRegistro}, #{idUsuaCrea},
+		SYSDATE(), #{deTermCrea})
+	</insert>
+
+</mapper>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.sistemaera.core.dao.DetalleParametroDao">
+
+	<resultMap id="detalleParametroResultMap" type="DetalleParametro">
+        <id property="nsDetalleParametro"				column="ns_det_parametro" />        
+ 		<result property="nsParametro"					column="ns_parametro"/>
+        <result property="descripcionDetalleParametro"	column="de_det_parametro"/>
+        <result property="valorDato01"			column="vl_dato_01"/>
+        <result property="valorDato02"			column="vl_dato_02"/>
+        <result property="valorDato03"			column="vl_dato_03"/>
+        <result property="valorDato04"			column="vl_dato_04"/>
+        <result property="valorDato05"			column="vl_dato_05"/>
+        <result property="tipoDatoParametro"	column="co_tipo_dato"/>
+        <result property="numeroOrdenParametro"	column="ns_orden"/>
+        <result property="descripcionCorta"		column="de_corta"/> 
+    	<result property="inProteccion"			column="in_protegido"/> 
+    </resultMap>
+	    
+	<select id="listarTodos" resultMap="detalleParametroResultMap" parameterType="HashMap">
+		SELECT 	d.ns_det_parametro,
+				d.ns_parametro, 
+				d.de_det_parametro,
+				d.de_corta,
+				d.vl_dato_01,
+				d.vl_dato_02,
+				d.vl_dato_03,
+				d.vl_dato_04,
+				d.vl_dato_05,
+				p.in_protegido
+		FROM 	DETALLE_PARAMETRO d 
+		INNER JOIN PARAMETRO p
+			ON p.ns_parametro = d.ns_parametro
+		WHERE 	d.st_regi = 'A' 
+		<if test="nsParametro != null"> AND d.ns_parametro = #{nsParametro}</if>
+		<if test="nsDetalleParametro != null"> AND d.ns_det_parametro = #{nsDetalleParametro}</if>
+	</select>
+	
+	<select id="listarTipoServicio" resultMap="detalleParametroResultMap">
+		SELECT 	d.ns_det_parametro, d.de_det_parametro
+		FROM 	DETALLE_PARAMETRO d 
+		WHERE 	d.ns_parametro = 1 and d.vl_dato_01 = 'REGULAR' and d.st_regi = 'A'
+	</select>
+	
+	    
+    <insert id="insertar" parameterType="DetalleParametro" statementType="CALLABLE">
+	   {call pkg_proceso.sp_ins_detalle_parametro(
+		       #{nsDetalleParametro, javaType=java.lang.Integer, jdbcType=NUMERIC, mode=OUT}
+		      ,#{nsParametro}
+		      ,#{descripcionDetalleParametro}
+			  ,#{idUsuaCrea}
+			  ,#{feUsuaCrea, javaType=java.sql.Timestamp, jdbcType=DATE, mode=OUT}
+		      ,#{deTermCrea}
+		      ,#{valorDato01}
+			  ,#{valorDato02}
+			  ,#{valorDato03}
+			  ,#{valorDato04}
+			  ,#{valorDato05}
+		      ,#{tipoDatoParametro}
+		      ,#{numeroOrdenParametro}
+		      ,#{descripcionCorta}
+		      ,#{vlInfoLarga}
+	   )}
+    </insert>  
+    
+    <update id="actualizar" parameterType="DetalleParametro" statementType="CALLABLE">
+	   {call pkg_proceso.sp_upd_detalle_parametro(
+		       #{nsDetalleParametro}
+		      ,#{nsParametro}
+		      ,#{descripcionDetalleParametro}
+		      ,#{stRegi}
+		      ,#{idUsuaModi}
+			  ,#{feUsuaModi, javaType=java.sql.Timestamp, jdbcType=DATE, mode=OUT}
+		      ,#{deTermModi}
+		      ,#{valorDato01}
+			  ,#{valorDato02}
+			  ,#{valorDato03}
+			  ,#{valorDato04}
+			  ,#{valorDato05}
+		      ,#{tipoDatoParametro}
+		      ,#{numeroOrdenParametro}
+		      ,#{descripcionCorta}
+		      ,#{vlInfoLarga}
+	   )}
+    </update>  
+  
+	
+		
+</mapper>

@@ -1,0 +1,228 @@
+package pe.com.sistemaera.core.services.impl;
+
+import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import pe.com.gmd.util.exception.GmdException;
+import pe.com.sistemaera.core.dao.PerfilDao;
+import pe.com.sistemaera.core.dao.UsuarioDao;
+import pe.com.sistemaera.core.entity.Opcion;
+import pe.com.sistemaera.core.entity.Perfil;
+import pe.com.sistemaera.core.entity.Usuario;
+import pe.com.sistemaera.core.services.UsuarioService;
+import pe.com.sistemaera.core.services.base.BaseServiceImpl;
+
+
+@Service
+public class UsuarioServiceImpl extends BaseServiceImpl<Usuario,Long> implements UsuarioService{
+
+	private static final Logger LOGGER = Logger.getLogger(UsuarioServiceImpl.class);
+	
+	@Autowired
+    UsuarioDao usuarioDao;
+     
+    @Autowired
+    PerfilDao perfilDao;
+    
+    @PostConstruct
+    public void inicializar(){
+        super.setBase(usuarioDao);
+    }
+    
+    @Override
+    public List<Usuario> listarTodos() throws GmdException{
+        List<Usuario>listaUsuarios = new ArrayList<Usuario>();
+        try {
+            listaUsuarios = usuarioDao.listarTodos();    
+        } catch (Exception excepcion) {
+            throw new GmdException(excepcion);
+        }        
+        return listaUsuarios;
+    }
+    
+    @Override
+    public List<Usuario> listarUsuariosPorParametrosBusqueda(Map<String, Object> parametrosBusqueda)throws GmdException {        
+        List<Usuario> listaUsuariosPorParametrosBusqueda = new ArrayList<Usuario>();    
+        try{        
+          listaUsuariosPorParametrosBusqueda = usuarioDao.listarUsuariosPorParametroBusqueda(parametrosBusqueda);
+        }catch(Exception excepcion){
+            throw new GmdException(excepcion);
+        }        
+        return listaUsuariosPorParametrosBusqueda;
+    }
+
+    @Override
+    public Usuario obtenerLoginUsuario(Usuario objUsuario) throws GmdException{
+        Usuario usuario = new Usuario();
+        try {
+            usuario= usuarioDao.obtenerLoginUsuario(objUsuario);
+        } catch (Exception exception) {
+            throw new GmdException(exception);
+        }
+        return usuario;
+    }
+    
+    @Override
+    @Transactional
+    public void insertar(Usuario usuario) throws GmdException{
+        try{
+            usuarioDao.insertar(usuario);            
+        }catch(Exception excepcion){
+            throw new GmdException(excepcion);
+        }
+    }
+    
+    @Override
+    @Transactional
+    public void actualizar(Usuario usuario) throws GmdException{
+        try{            
+            usuarioDao.actualizar(usuario);
+        }catch(Exception excepcion){
+            throw new GmdException(excepcion);
+        }
+    }
+    
+    public List<Opcion> listarOpcionesPorPerfil(Integer idPerfil) throws GmdException{
+        List<Opcion> listaOpciones = null;
+        try {
+         listaOpciones = usuarioDao.listarOpcionesPorPerfil(idPerfil);    
+        
+        } catch (Exception exception) {
+                
+            throw new GmdException(exception);
+        }
+       return listaOpciones;
+    }
+    
+    public List<Perfil> listarPerfilesPorLoginUsuario(String login) throws GmdException{
+    	
+    	Map<String, String> map = new HashMap<String, String>();
+    	map.put("login", login);
+        return usuarioDao.listarPerfilesPorLoginUsuario(map);
+    }
+    
+    public boolean existeNombreLoginRegistrado(String login) throws GmdException{
+        boolean resultado = false;
+        try {
+          Integer idUsuario = usuarioDao.existeNombreLoginRegistrado(login);    
+          if(idUsuario!=null && idUsuario==1){
+              resultado = true;
+          }
+           } catch (Exception exception) {
+            throw new GmdException(exception);    
+           }
+        
+       
+        return resultado;
+        
+       
+    }
+    
+    public Usuario obtener(long idUsuario) throws GmdException{
+        Usuario usuario=new Usuario();
+        try {
+            usuario=usuarioDao.obtener(idUsuario);
+        } catch (Exception exception) {
+            throw new GmdException(exception);
+        }
+        return usuario;
+    }
+    
+ 
+    public void eliminarUsuario(Integer id) throws GmdException {
+       try {
+          usuarioDao.eliminarUsuario(id);           
+        } catch (Exception excepcion) {
+          throw new GmdException(excepcion);
+        }       
+    }
+    
+    @Override
+    public boolean modificarContrasena(Map<String, Object> map) throws GmdException {
+        boolean esCorrecto=true;
+        try {  	        
+            usuarioDao.modificarContrasena(map);
+            esCorrecto=true;
+        } catch (Exception exception) {
+            esCorrecto=false;
+            throw new GmdException(exception);
+                        
+        }
+        
+        return esCorrecto;
+    }
+
+    public List<Usuario> listarParametros(Map<String, Object> parametrosBusqueda) throws GmdException{
+        List<Usuario> listaUsuarios = null;
+        try{
+            listaUsuarios = usuarioDao.listarParametros(parametrosBusqueda);
+        }catch(Exception excepcion){
+            throw new GmdException(excepcion);
+        }
+        return listaUsuarios;
+    }
+
+    @Override
+    public List<Usuario> buscarComboUsuario(Usuario usuario) throws GmdException {
+        try {
+            return usuarioDao.buscarComboUsuario(usuario);
+            
+        } catch (Exception excepcion) {
+            
+            excepcion.printStackTrace();
+            return null;
+        }
+        
+    }
+    public Map<String,Object> recuperarUsuarioWS(Map<String,Object> parametrosBusqueda) throws GmdException{
+        try{
+            return usuarioDao.recuperarUsuarioWS(parametrosBusqueda);
+        }catch(Exception exception)
+        {
+            throw new GmdException(exception);
+        }
+    }
+
+	@Override
+	public Integer validarUsuarioId(int idUsuario) throws GmdException {
+		int a=1;;
+		a=a+a;
+		return usuarioDao.validarUsuario(idUsuario);
+	}
+    
+	
+	public List<Map<String, Object>> obtenerListaPerfilesByUsuarios (List<Map<String, Object>> listaUsuario,Map<String, Object> parametrosBusqueda) throws GmdException{
+		 List<Map<String, Object>> listaPerfiles = new ArrayList<Map<String,Object>>();
+		 for(Map<String, Object> map : listaUsuario){
+			 Map<String, Object> mapPerfil = new HashMap<String, Object>();
+			 mapPerfil.put("idPerfil", map.get("idPerfil"));
+			 mapPerfil.put("dePerfil", map.get("nomPerfil"));
+			 listaPerfiles.add(mapPerfil);
+		 }
+		 return listaPerfiles;		
+	}
+
+	@Override
+	public Usuario obtenerUsuariobyidUsuario(Integer idUsuario) throws GmdException {
+		Usuario usuario = null;
+        try{
+        	usuario = usuarioDao.obtenerUsuariobyidUsuario(idUsuario);
+        }catch(Exception excepcion){
+            throw new GmdException(excepcion);
+        }
+        return usuario;
+	}	
+}

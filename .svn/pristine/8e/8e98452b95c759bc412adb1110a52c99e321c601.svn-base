@@ -1,0 +1,657 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="pe.com.sistemaera.core.util.ConstanteServices"%>
+<%@page import="pe.com.sistemaera.core.util.ConstantesParametros"%>
+<!DOCTYPE HTML>
+<html lang="es">
+<head>
+    <jsp:include page="../../template/libreriasCabecera.jsp" />
+</head>
+<body class="skin-gym bar-white">
+    <section class="wrap-ui">
+        <!--<header>-->
+        <header class="header">
+            <jsp:include page="../../template/header.jsp" />
+        </header>
+        <!--</header>-->
+        <!-- nav -->
+        <div class="menu">
+            <jsp:include page="../../template/menu.jsp" />
+        </div>
+        <!-- cierra nav -->
+        <!--<wrap-content>-->
+        <div class="wrap-content">
+            <!--</main-aside>-->
+            <!--<pull-main-content>-->
+            <div class="pull-main-content">
+                <!--<main-content>-->
+                <div class="main-content view-wrap">
+                    <div class="content-body">
+                        <div class="breadcrumbs">
+                            :: Usted se encuentra en: <span>SEGURIDAD</span> <span
+								class="nivel-bread">/</span> <span class="active-view">ACTUALIZAR
+								USUARIO</span>
+                        </div>
+                        <div class="main-colum">
+                            <!-- wrap -->
+                            <div class="box-wrap-main">
+                                <div class="box-wrap-header">
+                                    <div class="pull-left">
+                                        <div class="title-main">
+                                            Actualizar <span>Usuario</span>
+                                        </div>
+                                    </div>
+                                    <div class="pull-right">
+                                        <div class="botonera">
+                                            <button id="btnExportar" type="button" class="btn-update"
+                                                data-toggle="tooltip" data-placement="top"
+                                                data-original-title="Exportar">
+                                                <i></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- inicia form -->
+                                <form id="formRegistrarUsuario">
+                                	<input type="hidden" id="txtIdUsuario" name="idUsuario:null"
+										value="${usuario.idUsuario}" class="form-control" />
+                                    <div class="box-wrap-body">
+                                        <h3 class="title-form">DATOS DE USUARIO</h3>
+                                        <div class="box-form">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Login Usuario:<font color="red">(*)</font></label>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <input type="text" id="txtLogin" name="login"
+																	value="${usuario.login}" class="form-control"
+																	readonly="readonly" tabindex="1" maxlength="20" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+														<label>Nombres:<font color="red">(*)</font></label> <input
+															type="text" id="txtNombres" name="nombre"
+															value="${usuario.nombre}" class="form-control" onkeypress="return validarLetras(event)" tabindex="5" maxlength="40">
+													</div>
+													<div class="form-group">
+                                                        <label>Estado:</label> 
+                                                        <select id="selEstadoRegistro" name="estadoRegistro" class="form-control" tabindex="11">
+                                                            <option value="Activo">ACTIVO</option>
+                                                            <option value="Inactivo">INACTIVO</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Número de Documento:<font color="red">(*)</font></label>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <select id="selTipoDocumentoIdentidad"
+                                                                    name="idTipoDocumentoIdentidad" class="form-control" tabindex="2">
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <input type="text" id="txtNumeroDocumento"
+                                                                    name="numeroDocumentoIdentidad" 
+                                                                    class="form-control" tabindex="3">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+														<label>Apellido Paterno:<font color="red">(*)</font></label>
+														<input type="text" id="txtApellidoPaterno"
+															name="apellidoPaterno" value="${usuario.apellidoPaterno}"
+															class="form-control" onkeypress="return validarLetras(event)" tabindex="6" maxlength="40">
+													</div>
+                                                    <div class="form-group">
+                                                        <label>Hub:</label> <select id="selHub"
+                                                            name="idHub:null" class="form-control"
+                                                             tabindex="10">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+														<label>Correo Electrónico:<font color="red">(*)</font></label>
+														<input type="text" id="txtCorreoElectronico"
+															name="correoElectronico"
+															value="${usuario.correoElectronico}" class="form-control" tabindex="4" maxlength="100">
+													</div>
+                                                    <div class="form-group">
+														<label>Apellido Materno:</label>
+														<input type="text" id="txtApellidoMaterno"
+															name="apellidoMaterno" value="${usuario.apellidoMaterno}"
+															class="form-control" onkeypress="return validarLetras(event)" tabindex="7" maxlength="40">
+													</div>
+                                                    <div class="form-group">
+                                                        <label>Inicio Sesión Movil:</label>
+                                                        <select id="selSesionMovil" name="sesionMovil" class="form-control" tabindex="13">
+                                                            <option value="0">NO</option>
+                                                            <option value="1">SÍ</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="box-wrap-body">
+                                        <h3 class="title-form">ORGANIZACION DE PERTENENCIA</h3>
+                                        <div class="box-form">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+													<div class="form-group">
+														<label>Tipo de Usuario:<font color="red">(*)</font></label>
+														<select id="selTipoUsuario" name="tipoUsuario[nsDetalleParametro]"
+															class="form-control" tabindex="12">
+														</select>
+													</div>
+												</div>
+												<div class="col-sm-4">
+													<div class="form-group">
+                                                        <label>Pudo:</label>
+                                                        <select id="selPudo" name="idPudo" class="form-control" tabindex="8">
+                                                        </select>
+                                                    </div>
+												</div>
+												<div class="col-sm-4">
+                                            		<div class="form-group">
+                                                        <label>Proveedor:</label>
+                                                        <select id="selProveedor"
+                                                            name="idProveedor" class="form-control" tabindex="9">
+                                                        </select>
+                                                    </div>
+                                            	</div>
+                                            </div>
+                                            <div class="row">
+                                            	<div class="col-sm-4">
+													<div class="form-group">
+														<label>Empresa Cliente:</label> <select id="selCliente"
+															name="idCliente:null" class="form-control" tabindex="13">
+														</select>
+													</div>
+												</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="box-wrap-body">
+                                        <h3 class="title-form">ASIGNACION DE PERFILES</h3>
+                                        <div class="box-form">
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="col-md-3 col-md-offset-3">
+                                                        <br /> <label>Perfiles no Asignados:</label> <select
+                                                            id="selPerfilesNoAsignados" multiple class="form-control">
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-xs-1">
+                                                        <div class="col-sm-4 col-md-offset-2">
+                                                            <br />
+                                                            <p>
+                                                                <br /> <input type="button" id="btnAdicionar"
+                                                                    class="btn btn-default btn-xs" value=">"> <input
+                                                                    type="button" id="btnAdicionarTodos"
+                                                                    class="btn btn-default btn-xs" value="&raquo;">
+                                                                <input type="button" id="btnRemover"
+                                                                    class="btn btn-default btn-xs" value="<"><br />
+                                                                <input type="button" id="btnRemoverTodos"
+                                                                    class="btn btn-default btn-xs" value="&laquo;">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-3 col-md-offset-0">
+                                                        <br /> <label>Perfiles Asignados:</label> <select
+                                                            id="selPerfilesAsignados" name="perfilesAsignados[]"
+                                                            multiple="multiple" class="form-control">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="box-acciones">
+                                    <div class="pull-left">
+                                        <div id="divMensajeInformacion" class="pull-left alert-custom">
+                                                                                                      
+                                        </div>
+                                    </div>
+                                    <div class="pull-right">
+                                        <button type="button" id="btnGrabar" class="btn-s btn-add">Grabar</button>
+                                        <button type="button" id="btnCancelar" class="btn-s btn-clean">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="login inter-foot">
+                             <jsp:include page="../../template/footer.jsp" />
+                    </footer>
+                </div>
+            </div>
+        </div>
+        <div class="up-page upPage"><span class="glyphicon glyphicon-chevron-up"></span></div>
+    </section>
+
+    <!--JS-->
+    <jsp:include page="../../template/libreriasFooter.jsp" />
+    <script type="text/javascript">
+        $(document).ready(function() {
+            inicializarVariables();
+            cargarComponentes();
+        });
+
+        var btnCancelar = null;
+        var btnGrabar = null;
+        var btnAdicionar = null;
+        var btnAdicionarTodos = null;
+        var btnRemover = null;
+        var btnRemoverTodos = null;
+        var selTipoDocumentoIdentidad = null;
+		var selPudo = null;
+        var selProveedor = null;
+        var selHub = null;
+        var selEstadoRegistro = null;
+        var selSesionMovil = null;
+        var selTipoUsuario = null;
+        var selCliente = null;
+//         var selCourier = null;
+        var selPerfilesNoAsignados = null;
+        var selPerfilesAsignados = null;
+        var txtLogin = null;
+        var txtCorreoElectronico = null;
+        var txtNombres = null;
+        var txtApellidoPaterno = null;
+        var txtApellidoMaterno = null;
+        var txtIdUsuario = null;
+        var txtNumeroDocumento = null;
+        var formRegistrarUsuario = null;
+        var tipoDocumento=null;
+        var tamanio = 0;
+        
+        function inicializarVariables(){
+            btnGrabar = $('#btnGrabar');
+            btnCancelar = $('#btnCancelar');
+            btnAdicionar = $('#btnAdicionar');
+            btnRemover = $('#btnRemover');
+            btnAdicionarTodos = $('#btnAdicionarTodos');
+            btnRemoverTodos = $('#btnRemoverTodos');
+
+            selTipoDocumentoIdentidad = $('#selTipoDocumentoIdentidad');
+			selPudo = $('#selPudo');
+            selProveedor = $('#selProveedor');
+            selHub = $('#selHub');
+            selEstadoRegistro = $('#selEstadoRegistro');
+            selSesionMovil = $('#selSesionMovil');
+            selTipoUsuario = $('#selTipoUsuario');
+            selCliente = $('#selCliente');
+//             selCourier = $('#selCourier');
+
+            selPerfilesNoAsignados = $('#selPerfilesNoAsignados');
+            selPerfilesAsignados = $('#selPerfilesAsignados');
+
+            txtLogin = $('#txtLogin');
+            txtCorreoElectronico = $('#txtCorreoElectronico');
+            txtNombres = $('#txtNombres');
+            txtApellidoPaterno = $('#txtApellidoPaterno');
+            txtApellidoMaterno = $('#txtApellidoMaterno');
+            txtIdUsuario = $('#txtIdUsuario');
+            txtNumeroDocumento = $('#txtNumeroDocumento');
+
+            formRegistrarUsuario = $('#formRegistrarUsuario');
+        }
+
+        function cargarComponentes(){
+            var listaTipoDocumentos = ${listaTipoDocumentos};
+            selTipoDocumentoIdentidad.append($("<option/>").attr("value","-1").text("Seleccionar"));
+            $.each(listaTipoDocumentos, function(i, item) {
+                selTipoDocumentoIdentidad.append($("<option/>").attr("value",listaTipoDocumentos[i].idDetalleParametro).text(listaTipoDocumentos[i].descripcionCorta));
+            });
+
+            var listaProveedor = ${listaProveedor};
+			selProveedor.append($("<option/>").attr("value","-1").text("Seleccionar"));
+            $.each(listaProveedor, function(i, item) {
+                selProveedor.append($("<option/>").attr("value",listaProveedor[i].idProveedor).text(listaProveedor[i].descripcionProveedor));
+            });
+			
+            var listaPudo = ${listaPudo};
+            selPudo.append($("<option/>").attr("value","-1").text("Seleccionar"));
+            $.each(listaPudo, function(i, item) {
+                selPudo.append($("<option/>").attr("value",listaPudo[i].idPudo).text(listaPudo[i].noPudo));
+            });
+
+			var listaHub = ${listaHub};
+			selHub.append($("<option/>").attr("value","-1").text("Seleccionar"));
+            $.each(listaHub, function(i, item) {
+                selHub.append($("<option/>").attr("value",listaHub[i].identificador).text(listaHub[i].descripcion));
+            });
+
+            var listaTipoUsuario = ${listaTipoUsuario};
+            $.each(listaTipoUsuario, function(i, item) {
+                selTipoUsuario.append($("<option/>").attr("value",listaTipoUsuario[i].idDetalleParametro).text(listaTipoUsuario[i].descripcionCorta));
+                if(listaTipoUsuario[i].id=='${usuario.tipoUsuario.nsDetalleParametro}'){
+                  if (listaTipoUsuario[i].descripcion == 'EXTERNO'){                	          	  
+                        $('#selCliente').removeAttr('disabled');
+//                         $('#selCourier').removeAttr('disabled');                   	
+                  } else {
+                    $('#selCliente').val("");
+//                     $('#selCourier').val("");
+                    $('#selCliente').attr('disabled','disabled');
+//                     $('#selCourier').attr('disabled','disabled');                    
+                  }
+                }             
+            });
+
+            selTipoUsuario.change(function(event){
+            	changeTipoUsuario();
+            });
+
+            selCliente.change(function(event){
+//             	$('#selCliente').removeAttr('readonly');           	          	
+//             	$('#selCourier').val("");  
+//             	$('#selCourier').attr('readonly','true');      		            	
+            });
+
+//             selCourier.change(function(event){
+// //             	$('#selCourier').removeAttr('readonly');            	          	
+//             	$('#selCliente').val("");
+// //             	$('#selCliente').attr('readonly','true');        		
+//             }); 
+            	
+
+            var listaEmpresaCliente = ${listaEmpresaCliente};
+            selCliente.append($("<option/>").attr("value","").text("Seleccionar"));
+            $.each(listaEmpresaCliente, function(i, item) {
+                selCliente.append($("<option/>").attr("value",listaEmpresaCliente[i].ID_CLIENTE).text(listaEmpresaCliente[i].DE_CLIENTE)); 
+            });
+            
+
+//             var listaCourier = ${listaCourier};
+//             selCourier.append($("<option/>").attr("value","").text("Seleccionar"));
+//             $.each(listaCourier, function(i, item) {
+//                 selCourier.append($("<option/>").attr("value",listaCourier[i].id).text(listaCourier[i].descripcion)); 
+//             });
+
+            $( "#selTipoDocumentoIdentidad" ).change(function() {
+                if(selTipoDocumentoIdentidad.val() == '<%=ConstantesParametros.idOpcionSeleccione%>'){
+                    txtNumeroDocumento.val("");
+                    txtNumeroDocumento.prop("readonly",true);
+                }else{
+                	txtNumeroDocumento.prop("readonly", false);
+                    changeTipoDocu("#selTipoDocumentoIdentidad", "#txtNumeroDocumento", "#formRegistrarUsuario");
+                }
+            });
+            
+            selTipoUsuario.val('${usuario.tipoUsuario.nsDetalleParametro}');
+            selCliente.val('${usuario.idCliente}');
+            
+            selPudo.val(retornarValueCombo('${usuario.idPudo}'));
+            selProveedor.val(retornarValueCombo('${usuario.idProveedor}'));
+            selHub.val(retornarValueCombo('${usuario.idHub}'));
+            
+            if('${usuario.idTipoDocumentoIdentidad}'!=null){
+               selTipoDocumentoIdentidad.val(retornarValueCombo('${usuario.idTipoDocumentoIdentidad}'));
+               selTipoDocumentoIdentidad.change();
+            }
+            txtNumeroDocumento.val('${usuario.numeroDocumentoIdentidad}');
+            selEstadoRegistro.val('${usuario.estadoRegistro}');
+            selSesionMovil.val('${usuario.sesionMovil}');
+            
+
+// 			if ( '${usuario.estadoRegistro}' == 'Activo' ){
+// 				selEstadoRegistro.attr('disabled', 'disabled');
+// 			}
+            
+
+            var listaPerfilesNoAsignados = ${listaPerfilesNoAsignados};
+            $.each(listaPerfilesNoAsignados, function(i, item) {
+                selPerfilesNoAsignados.append($("<option/>").attr("value",listaPerfilesNoAsignados[i].id).text(listaPerfilesNoAsignados[i].descripcion)); 
+            });
+
+            var listaPerfilesAsignados = ${listaPerfilesAsignados};
+            if(listaPerfilesAsignados!=''){
+                $.each(listaPerfilesAsignados, function(i, item) {
+                    selPerfilesAsignados.append($("<option/>").attr("value",listaPerfilesAsignados[i].id).text(listaPerfilesAsignados[i].descripcion)); 
+                });
+            }
+            
+            btnAdicionar.click(function(event){
+                var perfilnoAsigando = $('#selPerfilesNoAsignados option:selected')//                 
+                if(selPerfilesNoAsignados.val()!=null && selPerfilesNoAsignados.val()!=''){
+                 $.each(perfilnoAsigando, function(i, item){
+                    selPerfilesAsignados.append('<option value="' + perfilnoAsigando[i].value +'" >' + perfilnoAsigando[i].text + '</option>');
+                    $("#selPerfilesNoAsignados option:selected").remove();
+                  });  
+                }
+            });
+
+            btnRemover.click(function(event){
+            	var perfilAsigando = $('#selPerfilesAsignados option:selected')
+                if(selPerfilesAsignados.val()!=null && selPerfilesAsignados.val()!=''){
+                  $.each(perfilAsigando, function(i, item){    
+                    selPerfilesNoAsignados.append('<option value="'+ perfilAsigando[i].value +'">' + perfilAsigando[i].text + '</option>');      
+                    $("#selPerfilesAsignados option:selected").remove();
+                  });  
+                }
+            });
+            
+            btnAdicionarTodos.click(function(event){
+                $('#selPerfilesNoAsignados option').each(function(){
+                    selPerfilesAsignados.append('<option value="'+ $(this).val() +'" >' + $(this).text() + '</option>');
+                     $("#selPerfilesNoAsignados option").remove();
+                });
+            });
+
+            btnRemoverTodos.click(function(event){
+                $('#selPerfilesAsignados option').each(function(){
+                    selPerfilesNoAsignados.append('<option value="'+ $(this).val() +'" >' + $(this).text() + '</option>');
+                     $("#selPerfilesAsignados option").remove();
+                });
+            });
+            
+
+            btnGrabar.click(function(event){
+                if(validarFormulario() && validarDocumento()){
+	                var usuarioJson = JSON.stringify(formRegistrarUsuario.serializeJSON());
+	                var listaPerfilesAsignados = '';
+	                var totalPerfilesAsignados = $('#selPerfilesAsignados option').length;
+	                var mensaje = "actualizado-";
+	                
+	                $('#selPerfilesAsignados option').each(function(index, value){
+	                    listaPerfilesAsignados = listaPerfilesAsignados + $(this).val();
+	                    if(index!=totalPerfilesAsignados-1)
+	                        listaPerfilesAsignados = listaPerfilesAsignados + ',';
+	                });
+	                $.ajax({
+	                    url: "./accionRegistrarUsuario",
+	                    type: "POST",
+	                    dataType: "json",
+	                    data : {
+	                        usuario: usuarioJson,
+	                        listaPerfilesAsignados: listaPerfilesAsignados
+	                    }
+	                }).done(function(paramJson) {
+		                if(paramJson.estadoRespuesta=='OK')
+	                        window.location.href = './cargarVentanaAdministrarUsuario?mensaje='+ mensaje + txtLogin.val();
+		                else
+		                	mostrarMensajeError('danger','fa fa-warning',paramJson.mensajeRespuesta);
+	                }).fail(function( jqXHR, textStatus, errorThrown ) {
+	                	validarFinDeSesion(jqXHR, textStatus, errorThrown, '<%= ConstanteServices.MENSAJE_SESION_EXPIRADA %>');
+	                });
+                }
+            });
+
+            btnCancelar.click(function(event){
+                window.location.href = './cargarVentanaAdministrarUsuario';
+            });
+            
+            changeTipoUsuario();
+        }
+
+		function retornarValueCombo(valor){
+			var retorno = "-1";
+			if(!(valor == "-1" || valor == "")){
+				retorno = valor;
+			}
+			return retorno;
+		}
+		
+		function changeTipoUsuario(){
+			tipoUsuario = $( "#selTipoUsuario option:selected" ).text();
+            	if (tipoUsuario=='EXTERNO') { 
+                  $('#selCliente').removeAttr('disabled');
+                  $('#selPudo').removeAttr('disabled');
+                  $('#selProveedor').removeAttr('disabled');
+//                   $('#selCourier').removeAttr('disabled');                   	
+            	}
+            	else{
+            		$('#selCliente').val("");
+            		$('#selPudo').val("-1");
+            		$('#selProveedor').val("-1");
+//             		$('#selCourier').val("");
+            		$('#selCliente').attr('disabled','disabled');
+            		$('#selPudo').attr('disabled','disabled');
+            		$('#selProveedor').attr('disabled','disabled');
+//                     $('#selCourier').attr('disabled','disabled');
+                }
+		}
+
+        function validarFormulario(){
+            var estado = true;
+            var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;            
+            var login = txtLogin.val();                       
+            var Longitudlogin = login.length;
+            
+            if($('#txtLogin').val().trim()==''){
+                mostrarMensajeError('danger','fa fa-warning','Debe ingresar un login para el usuario');
+                estado = false;
+            } else if (login.length < 4) {
+                mostrarMensajeError('danger','fa fa-warning','El  login ingresado debe tener al menos 4 caracteres de longitud');
+                estado = false;     
+            }else if(selTipoDocumentoIdentidad.val()=='-1'){
+                mostrarMensajeError('danger','fa fa-warning','Debe seleccionar un tipo y número de documento de identidad');
+                estado = false;
+            }else if(txtNumeroDocumento.val().trim()==''){
+                mostrarMensajeError('danger','fa fa-warning','La longitud del numero de documento es inválida para el tipo seleccionado');
+                estado = false;
+            }else if(!regex.test(txtCorreoElectronico.val().trim())){
+                mostrarMensajeError('danger','fa fa-warning','El Correo ingresado no es válido');
+                estado = false;
+            }else if(txtNombres.val().trim()==''){
+                mostrarMensajeError('danger','fa fa-warning','Debe ingresar los nombres del usuario');
+                estado = false;
+            }else if(txtApellidoPaterno.val().trim()==''){
+                mostrarMensajeError('danger','fa fa-warning','Debe ingresar el apellido paterno del usuario');
+                estado = false;
+            }else if (IsEmpty(selPerfilesAsignados.html())){       
+            	mostrarMensajeError('danger','fa fa-warning','Debe asignar al menos un perfil');
+            	estado = false;
+            }else if ($( "#selTipoUsuario option:selected" ).text()=="EXTERNO")
+            {
+            	if(selPudo.val()=='-1' && selProveedor.val()=='-1' && IsEmpty(selCliente.val())){
+            		mostrarMensajeError('danger','fa fa-warning','Debe seleccionar al menos una organización de pertenencia');
+            		estado = false;
+            	}
+            	else
+            	{
+					if(selPudo.val()!='-1' && (selProveedor.val()!='-1'|| !IsEmpty(selCliente.val())))
+					{
+	            		mostrarMensajeError('danger','fa fa-warning','Solo puede seleccionar una organización de pertenencia');
+	            		estado = false;
+            		}
+            		if(selProveedor.val()!='-1' && (selPudo.val()!='-1'|| !IsEmpty(selCliente.val())))
+					{
+	            		mostrarMensajeError('danger','fa fa-warning','Solo puede seleccionar una organización de pertenencia');
+	            		estado = false;
+            		}
+            		if(!IsEmpty(selCliente.val()) && (selPudo.val()!='-1'|| selProveedor.val()!='-1'))
+					{
+	            		mostrarMensajeError('danger','fa fa-warning','Solo puede seleccionar una organización de pertenencia');
+	            		estado = false;
+            		}            		
+            	}
+            }
+            
+            return estado;
+        }
+
+        function validarDocumento()
+        {
+            var correcto=true;
+            var lenNroDocumento = txtNumeroDocumento.val().length;
+            if(lenNroDocumento<tamanio && lenNroDocumento>0)
+            {
+                mostrarMensajeError('danger','fa fa-warning','El formato del No. de Documento no corresponde al tipo de documento ' + selTipoDocumentoIdentidad.find('option:selected').text());
+                correcto=false;
+            }
+            return correcto;
+        }
+
+        function validarLogin(e) {
+			tecla = (document.all) ? e.keyCode : e.which;
+			if (tecla == 8)
+				return true;
+			if (tecla == 9)
+				return true;
+			if (tecla == 11)
+				return true;
+			patron = /[A-Za-zÃ±Ã0-9\s]/;
+			te = String.fromCharCode(tecla);
+			return patron.test(te);
+		}
+
+        function validarNumeros(e) {
+			tecla = (document.all) ? e.keyCode : e.which;
+			if (tecla == 8)
+				return true;
+			if (tecla == 9)
+				return true;
+			if (tecla == 11)
+				return true;
+			patron = /[0-9\s]/;
+			te = String.fromCharCode(tecla);
+			return patron.test(te);
+		}
+        function validarLetras(e) {
+			tecla = (document.all) ? e.keyCode : e.which;
+			if (tecla == 8)
+				return true;
+			if (tecla == 9)
+				return true;
+			if (tecla == 11)
+				return true;
+			patron = /[A-Za-zÃ±Ã\s]/;
+			letras_latinas = /^[a-zA-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜ_\s]+$/;
+			te = String.fromCharCode(tecla);
+			return letras_latinas.test(te);
+		}
+
+        function mostrarMensajeError(type,icon,mensajeError){
+            var mensajeHTML = '';
+            mensajeHTML = '<div class="alert alert-'+type+'" role="alert" style="height: auto!important;">';
+            mensajeHTML = mensajeHTML + '<i class="'+icon+'"></i>';
+            mensajeHTML = mensajeHTML + mensajeError;
+            $('#divMensajeInformacion div').remove();
+            $('#divMensajeInformacion').append(mensajeHTML);
+        }
+
+        
+
+        $('#txtNumeroDocumento').keydown(function (e) {
+            if (tipoDocumento=='DNI' || tipoDocumento=='RUC' ){    
+              if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 116]) !== -1 ||
+                  (e.keyCode == 65 && e.ctrlKey === true) || 
+                  (e.keyCode >= 35 && e.keyCode <= 39)) {
+                       return;
+              }
+       
+              if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                  e.preventDefault();
+              }
+            }  
+          });
+       
+    </script>  
+</body>
+</html>

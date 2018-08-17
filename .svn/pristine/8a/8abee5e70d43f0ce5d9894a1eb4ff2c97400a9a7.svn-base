@@ -1,0 +1,181 @@
+package pe.com.sistemaera.core.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import pe.com.gmd.util.exception.GmdException;
+import pe.com.sistemaera.core.dao.base.BaseDao;
+import pe.com.sistemaera.core.entity.Opcion;
+import pe.com.sistemaera.core.entity.Perfil;
+import pe.com.sistemaera.core.entity.Usuario;
+
+public interface UsuarioDao  extends BaseDao<Usuario, Long>{
+
+    /**
+     * Descripcion	metodo listarTodos
+     * @return		List<Usuario>
+     * @throws 		GmdException
+     */
+    List<Usuario> listarTodos() throws GmdException;
+    /**
+     * Descripcion	metodo listarUsuariosPorParametroBusqueda
+     * @param 		parametrosBusqueda
+     * @return		List<Usuario>
+     * @throws 		GmdException
+     */
+    List<Usuario> listarUsuariosPorParametroBusqueda(Map<String, Object> parametrosBusqueda) throws GmdException;
+    /**
+     * Descripcion	metodo asignarPerfiles
+     * @param 		parametrosRegistro
+     * @return		boolean
+     * @throws 		GmdException
+     */
+    boolean asignarPerfiles(Map<String, Object> parametrosRegistro) throws GmdException;
+    //List<Usuario> listar()throws GmdException ;
+    /**
+     * Descripcion	metodo obtenerLoginUsuario
+     * @param 		login
+     * @return		objeto Usuario
+     * @throws 		GmdException
+     */
+    Usuario obtenerLoginUsuario(Usuario objUsuario) throws GmdException;
+   // boolean insertar(Usuario usuario) throws GmdException;
+    /**
+     * Descripcion	metodo listarParametros
+     * @param 		parametrosBusqueda
+     * @return		List<Usuario>
+     * @throws 		GmdException
+     */
+    List<Usuario> listarParametros(Map<String, Object> parametrosBusqueda) throws GmdException;
+   // boolean actualizar(Usuario usuario) throws GmdException;
+    /**
+     * Descripcion	metodo listarOpcionesPorPerfil
+     * @param 		idPerfil
+     * @return		List<Opcion>
+     * @throws 		GmdException
+     */
+    List<Opcion> listarOpcionesPorPerfil(Integer idPerfil) throws GmdException;
+    /**
+     * Descripcion	metodo listarPerfilesPorLoginUsuario
+     * @param 		login
+     * @return		List<Perfil>
+     * @throws 		GmdException
+     */
+    List<Perfil> listarPerfilesPorLoginUsuario(Map<String, String> map) throws GmdException;
+    /**
+     * Descripcion	metodo existeNombreLoginRegistrado
+     * @param 		login
+     * @return		Integer
+     * @throws 		GmdException
+     */
+    Integer existeNombreLoginRegistrado(String login) throws GmdException;
+   // Usuario obtener(Integer idUsuario) throws GmdException;
+    /**
+     * Descripcion	metodo eliminarUsuarioPerfil
+     * @param 		idUsuario
+     * @throws 		GmdException
+     */
+    void eliminarUsuarioPerfil(long idUsuario) throws GmdException;
+    
+    void eliminarUsuario(Integer idUsuario) throws GmdException;
+    //boolean eliminar(int id) throws GmdException;
+    /**
+     * Descripcion	metodo registrarInicioSesion
+     * @param 		datos
+     * @throws 		GmdException
+     */
+    void registrarInicioSesion(Map<String, Object> datos) throws GmdException;
+    /**
+     * Descripcion	metodo modificarContrasena
+     * @param 		map
+     * @return		boolean
+     * @throws 		GmdException
+     */
+    boolean modificarContrasena(Map<String, Object> map) throws GmdException;
+    /**
+     * Descripcion	metodo registrarFinSesion
+     * @param 		datos
+     * @throws 		GmdException
+     */
+    void registrarFinSesion(Map<String, Object> datos) throws GmdException;
+    /**
+     * Descripcion	metodo buscarComboUsuario
+     * @param 		usuario
+     * @return		List<Usuario>
+     * @throws 		GmdException
+     */
+    List<Usuario> buscarComboUsuario(Usuario usuario) throws GmdException;
+    /**
+     * Descripcion	metodo listarUsuarioInstructivo
+     * @param 		parametrosBusqueda
+     * @return		List<Usuario>
+     * @throws 		GmdException
+     */
+    List<Usuario> listarUsuarioInstructivo(Map<String, Object> parametrosBusqueda) throws GmdException;
+    /**
+     * Descripcion	metodo listarUsuariosDisponiblesPlantilla
+     * @param 		parametrosBusqueda
+     * @return		List<Usuario>
+     * @throws 		GmdException
+     */
+    List<Usuario> listarUsuariosDisponiblesPlantilla(Map<String, Object> parametrosBusqueda) throws GmdException;
+    /**
+     * Descripcion	metodo reporteLogAccesos
+     * @param 		parametrosBusqueda
+     * @return		List=Map
+     * @throws 		GmdException
+     */
+    List<Map<String, Object>> reporteLogAccesos(Map<String, Object> parametrosBusqueda) throws GmdException;
+    /**
+     * Descripcion	metodo reporteLogAcciones
+     * @param 		parametrosBusqueda
+     * @return		List=Map
+     * @throws 		GmdException
+     */
+    List<Map<String, Object>> reporteLogAcciones(Map<String, Object> parametrosBusqueda) throws GmdException;
+    /**
+     * Descripcion	metodo listarCorreos
+     * @param 		parametrosBusqueda
+     * @return		List<Usuario>
+     * @throws 		GmdException
+     */
+    List<Usuario> listarCorreos(Map<String, Object> parametrosBusqueda) throws GmdException;
+    /**
+     * Descripcion	metodo listarCorreosCas
+     * @param 		parametrosBusqueda
+     * @return		List<Usuario>
+     * @throws 		GmdException
+     */
+    List<Usuario> listarCorreosCas(Map<String, Object> parametrosBusqueda) throws GmdException;
+    
+    /**
+     * Descripcion	metodo recuperarUsuarioWS
+     * @param 		parametros
+     * @return		Map
+     * @throws 		GmdException
+     */
+    Map<String,Object> recuperarUsuarioWS(Map<String,Object> parametros) throws GmdException;
+    
+    List<Usuario> listarUsuarioComercial(Map<String, Object> parametrosBusqueda) throws GmdException;
+    
+    Integer validarUsuario(Integer idUsuario) throws GmdException;
+    
+    /* Inicio WSIniciarSesion */
+    
+    void usuarioMovil(Map<String, Object> parametrosBusqueda) throws GmdException;
+    
+    /* Fin WSIniciarSesion */
+    
+    List<Usuario> listarByEstadoRegistro(String stRegi) throws GmdException;
+    
+    List<Usuario> listarUsuarioSinVehiculo(Map<String, Object> parametrosBusqueda) throws GmdException;
+    
+    void actualizarIniSesiMovi(Usuario usuario) throws GmdException;
+	void cerrarSesionMovil(Map<String, Object> datos) throws GmdException;
+	void aceptarTerminosMovil(Map<String, Object> datos) throws GmdException;
+	
+	List<Usuario> listarByEstadoRegistroReporte(String stRegi) throws GmdException;
+	
+	Usuario obtenerUsuariobyidUsuario(Integer idPerfil) throws GmdException;
+	
+}

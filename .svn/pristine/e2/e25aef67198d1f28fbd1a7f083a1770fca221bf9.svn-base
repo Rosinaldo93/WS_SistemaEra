@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.sistemaera.core.dao.UsuarioDao" >
+		       
+	<resultMap id="listarUsuarioResultMap" type="Usuario">
+        <id property="idUsuario" column="id_usuario" />        
+ 		<result property="nombre"                    column="no_nomb_usua"/>
+        <result property="apellidoPaterno"           column="ap_pate_usua"/>
+        <result property="apellidoMaterno"           column="ap_mate_usua"/>
+        <result property="login"                     column="co_logi_usua"/>
+        <result property="idTipoDocumentoIdentidad"  column="ti_docu_iden"/>
+        <result property="numeroDocumentoIdentidad"  column="nu_docu_iden"/>
+        <result property="correoElectronico"         column="vl_corr_elec"/>        
+        <result property="deTermModi"      			 column="de_term_modi"/>
+        <result property="stRegi"                    column="st_regi"/>
+        <result property="estadoRegistro"            column="estadoRegistro"/>
+        <result property="idPerfil"            		 column="idPerfil"/>
+        <result property="descripcionPerfil"         column="DE_PERFIL"/>
+    </resultMap>
+	  
+    <select id="listarUsuariosPorParametroBusqueda" resultMap="listarUsuarioResultMap" parameterType="HashMap">
+		SELECT 
+		      u.id_usuario
+		    , u.no_nomb_usua
+		    , u.ap_pate_usua
+		    , u.ap_mate_usua
+		    , u.co_logi_usua
+		    , u.ti_docu_iden
+		    , u.nu_docu_iden
+		    , vl_corr_elec
+		    , u.vl_cont_inic_sesi		    
+		    , u.st_regi as st_regi
+		    , if(u.st_regi='I','Inactivo','Activo')  AS estadoRegistro
+		    , u.ID_PERFIL
+		    , p.NO_PERFIL as DE_PERFIL
+		FROM usuario u
+		INNER JOIN PERFIL p ON p.ID_PERFIL = u.ID_PERFIL 
+		<where>
+		    <if test="login != '' ">LOWER(u.co_logi_usua)  LIKE CONCAT('%',LOWER(#{login}),'%')  </if>
+		    <if test="idTipoDocumentoIdentidad != '-1' ">AND u.ti_docu_iden = #{idTipoDocumentoIdentidad} </if>
+		    <if test="numeroDocumentoIdentidad != '' ">AND LOWER(u.nu_docu_iden) LIKE CONCAT('%',LOWER(#{numeroDocumentoIdentidad}),'%') </if>
+		    <if test="correoElectronico != '' ">AND LOWER(u.vl_corr_elec) LIKE  CONCAT('%',LOWER(#{correoElectronico}),'%')  </if>
+		    <if test="nombres != '' ">AND LOWER(u.no_nomb_usua) LIKE   CONCAT('%',LOWER(#{nombres}),'%')  </if>
+		    <if test="apellidoPaterno != '' ">AND LOWER(u.ap_pate_usua) LIKE   CONCAT('%',LOWER(#{apellidoPaterno}),'%') </if>
+		    <if test="apellidoMaterno != '' ">AND LOWER(u.ap_mate_usua) LIKE  CONCAT('%',LOWER(#{apellidoMaterno}),'%') </if>
+		    <if test="estadoRegistro != '' ">AND u.st_regi = #{estadoRegistro} </if>
+		    <if test="idPerfil != '-1'  ">AND u.ID_PERFIL = #{idPerfil} </if>
+		</where>
+		ORDER BY u.co_logi_usua ASC
+    </select>
+    
+    <select id="obtener" resultMap="listarUsuarioResultMap" parameterType="Integer">
+    	SELECT 
+		      u.id_usuario
+		    , u.no_nomb_usua
+		    , u.ap_pate_usua
+		    , u.ap_mate_usua
+		    , u.co_logi_usua
+		    , u.ti_docu_iden
+		    , u.nu_docu_iden
+		    , vl_corr_elec
+		    , u.vl_cont_inic_sesi
+		    , u.st_regi as st_regi
+		    , if(u.st_regi='I','Inactivo','Activo')  AS estadoRegistro	
+		    , u.ID_PERFIL
+		FROM usuario u
+        WHERE u.id_usuario = #{idUsuario}
+    </select>
+  
+   <select id="obtenerUsuariobyidUsuario" resultMap="listarUsuarioResultMap" parameterType="Integer">
+    	SELECT 
+		      u.id_usuario
+		    , u.no_nomb_usua
+		    , u.ap_pate_usua
+		    , u.ap_mate_usua
+		    , u.co_logi_usua
+		    , u.ti_docu_iden
+		    , u.nu_docu_iden
+		    , vl_corr_elec
+		    , u.vl_cont_inic_sesi
+		    , u.st_regi as st_regi
+		    , if(u.st_regi='I','Inactivo','Activo')  AS estadoRegistro
+		    , u.ID_PERFIL	
+		FROM usuario u
+        WHERE u.id_usuario = #{idUsuario}
+    </select>
+    <insert id="insertar" parameterType="Usuario" >
+        INSERT INTO USUARIO ( 
+	          	no_nomb_usua
+	         , 	ap_pate_usua
+	         , 	ap_mate_usua
+	         ,	co_logi_usua
+	         , 	ti_docu_iden
+	         , 	nu_docu_iden
+	         ,  vl_corr_elec
+	         ,  vl_cont_inic_sesi
+	         ,	id_usua_crea
+	         , 	fe_usua_crea
+	         , 	de_term_crea
+	         , 	st_regi
+	         ,  ID_PERFIL
+         )
+        VALUES(
+        	 	#{nombre}
+        	, 	#{apellidoPaterno}
+        	, 	#{apellidoMaterno}
+         	,	#{login}
+         	, 	#{idTipoDocumentoIdentidad}
+         	, 	#{numeroDocumentoIdentidad}
+         	,   #{correoElectronico}
+         	, 	#{password}
+         	,   #{idUsuaCrea}
+         	, 	SYSDATE()
+         	, 	#{deTermCrea}
+         	, 	'A' 
+         	,   #{idPerfil}
+        )
+        <selectKey keyProperty="idUsuario"  resultType="java.lang.Integer" order="AFTER">
+            SELECT LAST_INSERT_ID() as idUsuario
+        </selectKey>
+    </insert>
+    
+    <update id="actualizar" parameterType="Usuario">
+        UPDATE usuario u
+           SET u.no_nomb_usua= #{nombre},
+               u.ap_pate_usua= #{apellidoPaterno},
+               u.ap_mate_usua= #{apellidoMaterno},
+               u.ti_docu_iden= #{idTipoDocumentoIdentidad}, 
+               u.nu_docu_iden= #{numeroDocumentoIdentidad},
+               u.vl_corr_elec= #{correoElectronico},
+               u.id_usua_modi= #{idUsuaModi},
+               u.fe_usua_modi= SYSDATE() ,
+               u.de_term_modi= #{deTermModi},
+               u.ID_PERFIL = #{idPerfil}
+               <if test="estadoRegistro != null ">,u.st_regi= #{estadoRegistro}</if>
+         WHERE id_usuario = #{idUsuario}
+    </update>
+    
+    <select id="obtenerLoginUsuario" parameterType="Usuario" resultType="Usuario">
+        SELECT u.id_usuario AS idUsuario, 
+               u.co_logi_usua AS login, 
+               u.vl_cont_inic_sesi AS password,
+               u.ap_pate_usua AS apellidoPaterno, 
+               u.ap_mate_usua AS apellidoMaterno, 
+               u.no_nomb_usua AS nombre,
+               u.vl_corr_elec AS correoElectronico ,
+               u.ID_PERFIL as idPerfil
+         FROM usuario u
+         WHERE  u.st_regi = #{stRegi} 
+           <if test="login != null ">AND LOWER(u.co_logi_usua) = LOWER(#{login})</if>
+           <if test="idUsuario > 0 "> AND u.id_usuario = #{idUsuario}</if>
+            <if test="password != null "> AND u.vl_cont_inic_sesi = #{password}</if>
+    </select>
+    
+    <insert id="asignarPerfiles" parameterType="HashMap" >
+        INSERT INTO usuario_perfil up 
+        (up.id_perfil, up.id_usuario, up.id_usua_crea, up.fe_usua_crea, up.de_term_crea, st_regi)
+        VALUES
+        (#{idPerfil}, #{idUsuario}, #{idUsuaCrea}, #{fechaCreacion}, #{deTermCrea}, 'A')
+    </insert>
+  
+    <select id="listarOpcionesPorPerfil" resultType="Opcion" parameterType="Integer">
+        SELECT o.id_opcion as idOpcion, o.no_opci as nombreOpcion, o.vl_acci as valorAccion, o.id_opci_padr as idPadre, 
+               o.id_tipo_opci as tipoOpcion, o.co_opci as codigoOpcion, o.nu_nivel as nivel 
+        FROM opcion o
+        INNER JOIN perfil_opcion po
+          ON o.id_opcion = po.id_opcion 
+        WHERE po.id_perfil = #{idPerfil}
+        	AND o.st_regi='A'
+         ORDER BY o.CO_OPCI asc , idOpcion
+    </select>
+    
+    <select id="listarPerfilesPorLoginUsuario" resultType="Perfil" parameterType="HashMap">
+		SELECT
+			p.id_perfil AS idPerfil
+		  , p.NO_PERFIL AS nombre
+		FROM perfil p
+		INNER JOIN usuario u ON p.ID_PERFIL = u.ID_PERFIL
+		WHERE p.st_regi='A' AND LOWER(u.co_logi_usua)=LOWER(#{login})
+    </select>
+    
+    <select id="existeNombreLoginRegistrado" resultType="Integer" parameterType="String">
+        SELECT 1 FROM usuario u
+         WHERE u.co_logi_usua=#{login}
+    </select>
+    
+    <delete id="eliminarUsuarioPerfil" parameterType="Long">
+        DELETE FROM usuario_perfil up WHERE up.id_usuario=#{idUsuario}
+    </delete>
+    
+    <update id="eliminar" parameterType="Integer">
+        UPDATE usuario 
+           SET st_regi='I'
+         WHERE id_usuario= #{idUsuario}
+    </update>
+    
+    <update id="eliminarUsuario" parameterType="Integer">
+        UPDATE usuario 
+           SET st_regi='I'
+         WHERE id_usuario= #{idUsuario}
+    </update>
+    
+    
+    <update id="modificarContrasena" parameterType="HashMap">
+      UPDATE usuario u
+	      SET 
+	      		u.vl_cont_inic_sesi = #{password}
+	          , u.id_usua_modi      = #{idUsuaModi}
+              , u.fe_usua_modi      = SYSDATE
+              , u.de_term_modi      = #{deTermModi}
+      WHERE u.id_usuario= #{idUsuario}
+    </update>
+    
+	    
+      <select id="listarParametros" parameterType="Map" resultType="Usuario">
+	      SELECT  u.id_usuario AS idUsuario,u.co_logi_usua AS login,
+	              u.no_nomb_usua AS nombre,u.ap_pate_usua AS apellidoPaterno,
+	              u.ap_mate_usua AS apellidoMaterno,
+	              u.no_nomb_usua || ' ' || u.ap_pate_usua || ' ' || u.ap_mate_usua AS deUsuario      
+	      FROM usuario u
+	      WHERE u.st_regi='A'
+		      ORDER BY u.no_nomb_usua ASC       
+	    </select>
+      
+      <select id="buscarComboUsuario" parameterType="Usuario" resultType="Usuario">
+        SELECT u.id_usuario AS id,
+               u.ap_pate_usua || ' ' || u.ap_mate_usua || ', ' || u.no_nomb_usua AS nombreCompleto
+          FROM usuario u
+         WHERE
+            u.st_regi = 'A'
+         ORDER BY u.no_nomb_usua
+      </select>
+              
+    <select id="validarUsuario" parameterType="Integer" resultType="Integer">
+	 SELECT COUNT(*) usuarios FROM Usuario U where U.ID_USUARIO = #{idUsuario}
+	</select>
+
+    <select id="listarByEstadoRegistro" resultMap="listarUsuarioResultMap" parameterType="String">
+		SELECT u.id_usuario,
+		       u.co_logi_usua 
+		FROM usuario u
+		WHERE u.st_regi = #{stRegi}
+    </select>
+    
+
+</mapper>
+

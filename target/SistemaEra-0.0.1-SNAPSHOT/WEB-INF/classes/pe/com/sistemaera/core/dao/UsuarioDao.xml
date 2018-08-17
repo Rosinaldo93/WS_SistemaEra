@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.sistemaera.core.dao.UsuarioDao" >
+		       
+	<resultMap id="listarUsuarioResultMap" type="Usuario">
+        <id property="idUsuario" column="id_usuario" />        
+ 		<result property="nombre"                    column="no_nomb_usua"/>
+        <result property="apellidoPaterno"           column="ap_pate_usua"/>
+        <result property="apellidoMaterno"           column="ap_mate_usua"/>
+        <result property="login"                     column="co_logi_usua"/>
+        <result property="idTipoDocumentoIdentidad"  column="ti_docu_iden"/>
+        <result property="numeroDocumentoIdentidad"  column="nu_docu_iden"/>
+        <result property="correoElectronico"         column="vl_corr_elec"/>
+        <result property="idCourier"                 column="id_courier"/>
+        <result property="idCliente"                 column="id_cliente"/>
+        <result property="idUsuarioCreacion"         column="id_usua_crea"/>
+        <result property="fechaUsuarioCreacion"      column="fe_usua_crea" javaType="Date" />
+        <result property="terminalCreacion"          column="de_term_crea"/>
+        <result property="idUsuarioModificacion"     column="id_usua_modi"/>
+        <result property="fechaUsuarioModificacion"  column="fe_usua_modi"/>
+        <result property="terminalModificacion"      column="de_term_modi"/>
+        <result property="estadoRegistro"            column="st_regi"/>
+        <result property="cantidadSesionMaxima"      column="ca_sesi_maxi"/>
+        <result property="inCmbClave"                column="in_cmb_clave"/>
+        <result property="feVctoClave"               column="fe_vcto_clave"/>
+        <result property="idPudo"               	 column="id_pudo"/>
+        <result property="idProveedor"               column="id_proveedor"/>
+        <result property="idHub"               		 column="id_hub"/>
+        
+        <result property="nombrePudo"                column="nombrePudo"/>
+        <result property="nombreProveedor"           column="nombreProveedor"/>
+        <result property="nombreHub"               	 column="nombreHub"/>
+        <result property="sesionMovil"               column="sesionMovil"/>
+        
+    </resultMap>
+	  
+    <select id="listarUsuariosPorParametroBusqueda" resultMap="listarUsuarioResultMap" parameterType="HashMap">
+		SELECT 
+		      u.id_usuario
+		    , u.no_nomb_usua
+		    , u.ap_pate_usua
+		    , u.ap_mate_usua
+		    , u.co_logi_usua
+		    , u.ti_docu_iden
+		    , u.nu_docu_iden
+		    , vl_corr_elec
+		    , u.vl_cont_inic_sesi
+		    , u.id_cliente
+		    , u.id_usua_crea
+		    , u.fe_usua_crea
+		    , u.de_term_crea
+		    , u.id_usua_modi
+		    , u.fe_usua_modi
+		    , u.de_term_modi
+		    , CASE u.st_regi WHEN 'A' THEN 'Activo' ELSE 'Inactivo' END as st_regi
+		    , u.ti_pa_usuario as tu_nsDetalleParametro
+		    , u.in_inicio_sesi_movi as sesionMovil
+		FROM usuario u
+		<where>
+		    <if test="login != '' ">LOWER(u.co_logi_usua)  LIKE '%' || LOWER(#{login}) || '%' </if>
+		    <if test="idTipoDocumentoIdentidad != '-1' ">AND u.ti_docu_iden = #{idTipoDocumentoIdentidad} </if>
+		    <if test="numeroDocumentoIdentidad != '' ">AND LOWER(u.nu_docu_iden) LIKE '%' || LOWER(#{numeroDocumentoIdentidad}) || '%' </if>
+		    <if test="correoElectronico != '' ">AND LOWER(u.vl_corr_elec) LIKE '%' || LOWER(#{correoElectronico}) || '%' </if>
+		    <if test="nombres != '' ">AND LOWER(u.no_nomb_usua) LIKE '%' || LOWER(#{nombres}) || '%' </if>
+		    <if test="apellidoPaterno != '' ">AND LOWER(u.ap_pate_usua) LIKE '%' || LOWER(#{apellidoPaterno}) || '%' </if>
+		    <if test="apellidoMaterno != '' ">AND LOWER(u.ap_mate_usua) LIKE '%' || LOWER(#{apellidoMaterno}) || '%' </if>
+		    <if test="idTipoUsuario != '-1' ">AND u.ti_pa_usuario = #{idTipoUsuario} </if>
+		    <if test="estadoRegistro != '' ">AND u.st_regi = #{estadoRegistro} </if>
+		    <if test="idPudo != '-1' ">AND u.id_pudo = #{idPudo} </if>
+		    <if test="idProveedor != '-1' ">AND u.id_proveedor = #{idProveedor} </if>
+		    <if test="idHub != '-1' ">AND u.id_hub = #{idHub} </if>
+		</where>
+		ORDER BY u.co_logi_usua ASC
+    </select>
+    
+    <select id="obtener" resultMap="listarUsuarioResultMap" parameterType="Long">
+    	SELECT 
+		      u.id_usuario
+		    , u.no_nomb_usua
+		    , u.ap_pate_usua
+		    , u.ap_mate_usua
+		    , u.co_logi_usua
+		    , u.ti_docu_iden
+		    , u.nu_docu_iden
+		    , vl_corr_elec
+		    , u.vl_cont_inic_sesi
+		    , u.id_cliente
+		    , u.id_usua_crea
+		    , u.fe_usua_crea
+		    , u.de_term_crea
+		    , u.id_usua_modi
+		    , u.fe_usua_modi
+		    , u.de_term_modi
+		    , CASE u.st_regi WHEN 'A' THEN 'Activo' ELSE 'Inactivo' END as st_regi
+		    <!-- , u.IN_CMB_CLAVE -->
+		    <!-- , u.FE_VCTO_CLAVE -->
+		    , u.ID_PUDO
+		    , u.ID_PROVEEDOR
+		    , u.ID_HUB
+		    , u.ti_pa_usuario as tu_nsDetalleParametro
+		    , u.IN_INICIO_SESI_MOVI as sesionMovil
+		FROM usuario u
+        WHERE u.id_usuario = #{idUsuario}
+    </select>
+  
+    <insert id="insertar" parameterType="Usuario" >
+        <selectKey keyProperty="idUsuario"  resultType="java.lang.Long" order="BEFORE">
+            SELECT sq_usuario.nextval FROM dual
+        </selectKey>
+        INSERT INTO USUARIO u( 
+	         	u.id_usuario
+	         , 	u.no_nomb_usua
+	         , 	u.ap_pate_usua
+	         , 	u.ap_mate_usua
+	         ,	u.co_logi_usua
+	         , 	u.ti_docu_iden
+	         , 	u.nu_docu_iden
+	         ,  vl_corr_elec
+	         ,  u.vl_cont_inic_sesi
+	         ,	u.id_cliente
+	         ,	u.id_usua_crea
+	         , 	fe_usua_crea
+	         , 	u.de_term_crea
+	         , 	u.st_regi
+	         ,	u.ti_pa_usuario
+	         , 	u.in_cmb_clave
+	         ,	u.fe_vcto_clave
+	         ,  u.id_pudo
+	         ,  u.id_proveedor
+	         ,  u.id_hub
+         )
+        VALUES(
+        		#{idUsuario}
+        	, 	#{nombre}
+        	, 	#{apellidoPaterno}
+        	, 	#{apellidoMaterno, jdbcType=VARCHAR}
+         	,	#{login}
+         	, 	#{idTipoDocumentoIdentidad}
+         	, 	#{numeroDocumentoIdentidad}
+         	,   #{correoElectronico}
+         	, 	#{password}
+         	, 	#{idCliente}
+         	,   #{idUsuarioCreacion}
+         	, 	#{fechaUsuarioCreacion}
+         	, 	#{terminalCreacion}
+         	, 	'A' 
+         	,   #{idTipoUsua}
+         	, 	#{inCmbClave, jdbcType=NUMERIC}
+         	,	#{feVctoClave, jdbcType=DATE}
+         	,	#{idPudo}
+         	, 	#{idProveedor}
+         	, 	#{idHub}
+        )
+    </insert>
+    
+    <update id="actualizar" parameterType="Usuario">
+        UPDATE usuario u
+           SET u.no_nomb_usua= #{nombre},
+               u.ap_pate_usua= #{apellidoPaterno},
+               u.ap_mate_usua= #{apellidoMaterno},
+               u.id_pudo= #{idPudo},
+               u.id_proveedor= #{idProveedor},
+               u.id_hub= #{idHub},
+<!--                u.co_rol= #{rol.id}, -->
+<!--                u.co_uuoo= #{unidadOrganizacional.id}, -->
+<!--                u.id_pais= #{idPais, jdbcType=NUMERIC}, -->
+               u.ti_docu_iden= #{idTipoDocumentoIdentidad}, 
+               u.nu_docu_iden= #{numeroDocumentoIdentidad},
+               u.vl_corr_elec= #{correoElectronico},
+<!--                u.ca_sesi_maxi= #{cantidadSesionMaxima, jdbcType=NUMERIC}, -->
+               u.ti_pa_usuario= #{tipoUsuario.nsDetalleParametro},--
+               u.id_cliente= #{idCliente, jdbcType=NUMERIC}, 
+<!--                u.id_courier = #{idCourier, jdbcType=NUMERIC}, -->
+               u.id_usua_modi= #{idUsuarioModificacion},
+               u.fe_usua_modi= #{fechaUsuarioModificacion},
+               u.de_term_modi= #{terminalModificacion},
+               u.in_inicio_sesi_movi = #{sesionMovil}
+               <if test="estadoRegistro != null ">,u.st_regi= #{estadoRegistro}</if>
+         WHERE id_usuario = #{idUsuario}
+    </update>
+    
+    <select id="obtenerLoginUsuario" parameterType="Usuario" resultType="Usuario">
+        SELECT u.id_usuario AS idUsuario, 
+               u.co_logi_usua AS login, 
+               u.vl_cont_inic_sesi AS password,
+               u.ap_pate_usua AS apellidoPaterno, 
+               u.ap_mate_usua AS apellidoMaterno, 
+               u.no_nomb_usua AS nombre,
+               u.ti_pa_usuario AS "tipoUsuario.id",
+               u.vl_corr_elec AS correoElectronico,
+               u.id_cliente as idCliente,
+               u.in_cmb_clave AS inCmbClave,
+               u.fe_vcto_clave AS feVctoClave,
+               u.id_pudo AS idPudo,
+               u.id_proveedor AS idProveedor,
+               u.id_hub AS idHub
+         FROM usuario u
+         WHERE  u.st_regi = #{stRegi} 
+           <if test="login != null ">AND LOWER(u.co_logi_usua) = LOWER(#{login})</if>
+           <if test="idUsuario > 0 "> AND u.id_usuario = #{idUsuario}</if>
+            <if test="password != null "> AND u.vl_cont_inic_sesi = #{password}</if>
+    </select>
+    
+    <insert id="asignarPerfiles" parameterType="HashMap" >
+        INSERT INTO usuario_perfil up 
+        (up.id_perfil, up.id_usuario, up.id_usua_crea, up.fe_usua_crea, up.de_term_crea, st_regi)
+        VALUES
+        (#{idPerfil}, #{idUsuario}, #{idUsuarioCreacion}, #{fechaCreacion}, #{terminalCreacion}, 'A')
+    </insert>
+  
+    <select id="listarOpcionesPorPerfil" resultType="Opcion" parameterType="Integer">
+        SELECT o.id_opcion as idOpcion, o.no_opci as nombreOpcion, o.vl_acci as valorAccion, o.id_opci_padr as idPadre, 
+               o.id_tipo_opci as tipoOpcion, o.co_opci as codigoOpcion, o.nu_nivel as nivel 
+        FROM opcion o
+        INNER JOIN perfil_opcion po
+          ON o.id_opcion = po.id_opcion 
+        WHERE po.id_perfil = #{idPerfil}
+        	AND o.st_regi='A'
+         ORDER BY co_opci
+    </select>
+    
+    <select id="recuperarUsuarioWS" parameterType="HashMap" resultType="HashMap">
+        select 
+            dg.ti_valor_1 AS url,
+            dg.ti_valor_2 AS usuario,
+            dg.ti_valor_3 AS clave
+          from detalle_generico dg 
+          where 
+                dg.id_gene_det = #{idDetalle}
+    </select>
+
+    <select id="listarPerfilesPorLoginUsuario" resultType="Perfil" parameterType="HashMap">
+		SELECT
+			p.id_perfil AS idPerfil
+		  , p.NO_PERFIL AS nombre
+		FROM perfil p
+		INNER JOIN usuario u ON p.ID_PERFIL = u.ID_PERFIL
+		WHERE p.st_regi='A' AND LOWER(u.co_logi_usua)=LOWER(#{login})
+    </select>
+    
+    <select id="existeNombreLoginRegistrado" resultType="Integer" parameterType="String">
+        SELECT 1 FROM usuario u
+         WHERE u.co_logi_usua=#{login}
+    </select>
+    
+    <delete id="eliminarUsuarioPerfil" parameterType="Long">
+        DELETE FROM usuario_perfil up WHERE up.id_usuario=#{idUsuario}
+    </delete>
+    
+    <update id="eliminar" parameterType="Long">
+        UPDATE usuario 
+           SET st_regi='I'
+         WHERE id_usuario= #{idUsuario}
+    </update>
+    
+    <insert id="registrarInicioSesion" parameterType="HashMap">
+        INSERT INTO log_acceso a
+        (a.id_log_acce, a.fe_inic_acce, a.de_term_acce, a.id_usuario, a.fecha_fin_acceso,
+         a.id_usua_crea, a.fe_usua_crea, a.de_term_crea, a.st_regi, a.id_pais)
+        VALUES
+        (#{idLogAcceso}, #{fechaInicioAcceso}, #{terminalAcceso}, #{idUsuario}, #{fechaFinAcceso},
+         #{idUsuarioCreacion}, #{fechaCreacion}, #{terminalCreacion}, 'A', #{idPais})
+    </insert>    
+    
+    <update id="modificarContrasena" parameterType="HashMap">
+      UPDATE usuario u
+	      SET 
+	      		u.vl_cont_inic_sesi = #{password}
+	          ,	u.in_cmb_clave      = #{inCmbClave}
+	          ,	u.fe_vcto_clave     = #{feVctoClave, jdbcType=DATE}
+	          , u.id_usua_modi      = #{idUsuarioModificacion}
+              , u.fe_usua_modi      = SYSDATE
+              , u.de_term_modi      = #{terminalModificacion}
+      WHERE u.id_usuario= #{idUsuario}
+    </update>
+    
+	    
+      <select id="listarParametros" parameterType="Map" resultType="Usuario">
+	      SELECT  u.id_usuario AS idUsuario,u.co_logi_usua AS login,
+	              u.no_nomb_usua AS nombre,u.ap_pate_usua AS apellidoPaterno,
+	              u.ap_mate_usua AS apellidoMaterno,
+	              u.no_nomb_usua || ' ' || u.ap_pate_usua || ' ' || u.ap_mate_usua AS deUsuario      
+	      FROM usuario u
+	      WHERE u.st_regi='A'
+		      <if test="idPais!=null">
+		          AND u.id_pais=#{idPais}
+		      </if>
+		      <if test="idCliente!=null">
+		          AND u.id_cliente=#{idCliente}
+		      </if>
+		      <if test="idAsesorComercial!=null">
+		          AND u.co_rol = #{idAsesorComercial}
+		      </if>
+		      <if test="idRolComercial!=null">
+		          AND u.co_rol = #{idRolComercial}
+		      </if>
+		      ORDER BY u.no_nomb_usua ASC       
+	    </select>
+      
+      <select id="buscarComboUsuario" parameterType="Usuario" resultType="Usuario">
+        SELECT u.id_usuario AS id,
+               u.ap_pate_usua || ' ' || u.ap_mate_usua || ', ' || u.no_nomb_usua AS nombreCompleto
+          FROM usuario u
+         WHERE u.co_rol = #{rol.id}
+           AND u.st_regi = 'A'
+           AND u.id_pais = #{idPais}
+         ORDER BY u.no_nomb_usua
+      </select>
+              
+    <select id="validarUsuario" parameterType="Integer" resultType="Integer">
+	 SELECT COUNT(*) usuarios FROM Usuario U where U.ID_USUARIO = #{idUsuario}
+	</select>
+
+    <select id="listarByEstadoRegistro" resultMap="listarUsuarioResultMap" parameterType="String">
+		SELECT u.id_usuario,
+		       u.co_logi_usua 
+		FROM usuario u
+		WHERE u.st_regi = #{stRegi}
+    </select>
+    
+
+</mapper>
+

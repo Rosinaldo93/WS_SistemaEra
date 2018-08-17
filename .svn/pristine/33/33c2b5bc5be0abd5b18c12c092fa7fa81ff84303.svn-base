@@ -1,0 +1,47 @@
+package pe.com.sistemaera.core.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import pe.com.sistemaera.core.bean.BDetalleParametroBean;
+import pe.com.sistemaera.core.bean.BRespuestaBean;
+
+@Controller
+@RequestMapping(value = "/general")
+public class GeneralController {
+	
+	private static final Logger LOGGER = Logger.getLogger(GeneralController.class);
+	private String mensaje = "";
+	private BRespuestaBean respuestaBean = new BRespuestaBean();
+	
+	public List<BDetalleParametroBean> obtenerListaTipoOpcion(){
+		//TODO borrar cuando se defina la tabla parametro
+		List<BDetalleParametroBean> listaDetalleParametro = new ArrayList<BDetalleParametroBean>();
+		
+		BDetalleParametroBean detalleParametro = new BDetalleParametroBean();
+		detalleParametro.setIdDetalleParametro(177);
+		detalleParametro.setDescripcion("PÁGINA");
+		listaDetalleParametro.add(detalleParametro);
+		
+		detalleParametro = new BDetalleParametroBean();
+		detalleParametro.setIdDetalleParametro(178);
+		detalleParametro.setDescripcion("TAB");
+		listaDetalleParametro.add(detalleParametro);
+		
+		detalleParametro = new BDetalleParametroBean();
+		detalleParametro.setIdDetalleParametro(179);
+		detalleParametro.setDescripcion("BOTÓN");
+		listaDetalleParametro.add(detalleParametro);
+		
+		detalleParametro = new BDetalleParametroBean();
+		detalleParametro.setIdDetalleParametro(180);
+		detalleParametro.setDescripcion("DASHBOARD");
+		listaDetalleParametro.add(detalleParametro);
+		
+		return listaDetalleParametro;
+	}
+}

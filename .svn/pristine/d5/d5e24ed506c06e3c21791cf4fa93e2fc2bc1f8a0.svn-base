@@ -1,0 +1,30 @@
+package pe.com.sistemaera.core.controller;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import pe.com.gmd.util.exception.GmdException;
+import pe.com.sistemaera.core.entity.Perfil;
+import pe.com.sistemaera.core.services.PerfilService;
+
+@Controller
+public class LoginController {
+	
+	
+	@Autowired
+	private PerfilService perfilService;
+	
+	@RequestMapping(value="/login")
+    public String cargarVentanaInicioSesion(HttpServletRequest request, Model model)throws GmdException{  
+       
+		List<Perfil> lista = perfilService.listarTodos();
+		return "login";
+    }
+	
+}
